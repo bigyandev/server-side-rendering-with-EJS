@@ -9,7 +9,9 @@ async function handleCreateUser(req,res) {
     await User.create({
         name: body.name,
         age: body.age,
-        role: body.role
+        role: body.role,
+        createdBy: req.user._id
+
     })
     const allUsers = await User.find({})
     return res.render("home",{users: allUsers})
@@ -40,7 +42,7 @@ async function handleDeleteUserById(req,res) {
 //static Routing 
 
 async function handleStaticShowUser(req,res) {
-    const allUsers = await User.find({})
+    const allUsers = await User.find({createdBy: req.user._id})
     res.render("home", {
         users: allUsers
     })
